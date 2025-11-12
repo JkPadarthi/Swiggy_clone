@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Swiggy Clone</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍔 Swiggy Clone</h1>
+            <nav>
+                <a href="/">Home</a>
+                <a href="/login">Login</a>
+                <a href="/restaurants">Restaurants</a>
+                <a href="/cart">Cart</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="login-container">
+                <h2>Create Account</h2>
+                <form id="registerForm" method="POST" action="#">
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email (optional):</label>
+                        <input type="email" id="email" name="email" autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required autocomplete="new-password">
+                    </div>
+                    <button type="submit" class="btn">Register</button>
+                </form>
+                <div id="message" class="message"></div>
+                <p style="text-align: center; margin-top: 15px;">
+                    Already have an account? <a href="/login">Login here</a>
+                </p>
+            </div>
+        </main>
+    </div>
+    
+    <script src="register.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Swiggy Clone - Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Jwiggy</h1>
+            <nav>
+                <a href="/login">Login</a>
+                <a href="/restaurants">Restaurants</a>
+                <a href="/cart">Cart</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="welcome-section">
+                <h2 style="font-size: 42px; font-weight: 700; color: #282c3f; margin-bottom: 15px;">Hungry? Order Now!</h2>
+                <p style="font-size: 18px; color: #686b78; margin-bottom: 30px;">Order delicious food from your favorite restaurants</p>
+                <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                    <a href="/restaurants" class="btn" style="width: auto; padding: 14px 32px; font-size: 16px;">Browse Restaurants</a>
+                    <a href="/register" class="btn" style="width: auto; padding: 14px 32px; font-size: 16px; background-color: #fff; color: #fc8019; border: 2px solid #fc8019;">Sign Up</a>
+                </div>
+            </div>
+            <div id="dbStatus" style="margin-top: 20px; text-align: center;"></div>
+        </main>
+        
+        <script>
+            // Quick DB status check on home page
+            fetch('/api/db-test')
+                .then(res => res.json())
+                .then(data => {
+                    const statusDiv = document.getElementById('dbStatus');
+                    if (data.success) {
+                        statusDiv.innerHTML = `<p style="color: #28a745;">Database Connected (${data.table_count} tables found)</p>`;
+                    } else {
+                        statusDiv.innerHTML = `<p style="color: #dc3545;">❌ Database Not Connected - <a href="/db-test">Check Details</a></p>`;
+                    }
+                })
+                .catch(err => {
+                    const statusDiv = document.getElementById('dbStatus');
+                    statusDiv.innerHTML = `<p style="color: #dc3545;">❌ Could not check database status</p>`;
+                });
+        </script>
+    </div>
+</body>
+</html>
+
