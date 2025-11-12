@@ -58,6 +58,66 @@ nav a:hover {
     color: #fc8019;
 }
 
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: auto;
+}
+
+.username {
+    color: #282c3f;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.orders-link {
+    color: #282c3f;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.orders-link:hover {
+    background-color: #fff5eb;
+    color: #fc8019;
+}
+
+.admin-link {
+    background-color: #fc8019;
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.admin-link:hover {
+    background-color: #e6700f;
+    color: white !important;
+}
+
+.logout-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #c82333;
+}
+
 main {
     background-color: transparent;
     padding: 30px 0;
@@ -394,5 +454,180 @@ main {
     padding: 0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     overflow: hidden;
+}
+
+.admin-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.admin-section {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.admin-section h3 {
+    color: #282c3f;
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: #fc8019;
+    box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.1);
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #fc8019;
+    box-shadow: 0 0 0 3px rgba(252, 128, 25, 0.1);
+}
+
+.welcome-section {
+    background: linear-gradient(135deg, #fff 0%, #fff5eb 100%);
+    border-radius: 16px;
+    padding: 60px 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* Enhanced button styles */
+.btn {
+    background: linear-gradient(135deg, #fc8019 0%, #e6700f 100%);
+    box-shadow: 0 4px 12px rgba(252, 128, 25, 0.3);
+    transition: all 0.3s ease !important;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(252, 128, 25, 0.4);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* Enhanced card hover effects */
+.restaurant-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.restaurant-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* Order History Styles */
+.orders-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.order-card:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.order-header h3 {
+    color: #282c3f;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.order-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.order-info p {
+    margin: 8px 0;
+    color: #686b78;
+    font-size: 14px;
+}
+
+.order-total {
+    font-size: 20px;
+    font-weight: 700;
+    color: #282c3f;
+}
+
+.order-items {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.order-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+}
+
+.order-item:last-child {
+    margin-bottom: 0;
+}
+
+.item-total {
+    font-weight: 600;
+    color: #282c3f;
+    font-size: 16px;
+}
+
+/* Smooth animations for interactive elements */
+button, a, input, select, textarea {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 

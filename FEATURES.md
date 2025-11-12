@@ -1,7 +1,7 @@
 # Features Documentation
 
 ## Overview
-This is a simple Swiggy clone application with basic food ordering functionality.
+This is a simple food ordering application (Jwiggy) with basic food ordering functionality.
 
 ## Implemented Features
 

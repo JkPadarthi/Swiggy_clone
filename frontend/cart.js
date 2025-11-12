@@ -124,6 +124,14 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
     e.preventDefault();
     e.stopPropagation();
     
+    // Check if user is logged in
+    const user = loadUserInfo();
+    if (!user) {
+        alert('Please login to place an order');
+        window.location.href = '/login';
+        return;
+    }
+    
     const address = document.getElementById('address').value.trim();
     const messageDiv = document.getElementById('checkoutMessage');
     const submitBtn = document.querySelector('#checkoutForm button[type="submit"]');
@@ -151,7 +159,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ address })
+            body: JSON.stringify({ address, user_id: user.id })
         });
         
         console.log('Checkout response status:', response.status);

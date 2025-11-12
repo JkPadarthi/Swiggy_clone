@@ -179,10 +179,16 @@ def login():
         user = cursor.fetchone()
         
         if user:
+            # Check for admin privileges (vishal with password 'password')
+            is_admin = (username.lower() == 'vishal' and password == 'password')
             return jsonify({
                 'success': True,
                 'message': 'Login successful',
-                'user': {'id': user['id'], 'username': user['username']}
+                'user': {
+                    'id': user['id'], 
+                    'username': user['username'],
+                    'is_admin': is_admin
+                }
             })
         else:
             return jsonify({'success': False, 'message': 'Invalid credentials'}), 401
@@ -324,9 +330,14 @@ def checkout():
             item_data = cursor.fetchone()
             total += item_data['price'] * item['quantity']
         
+        # Get user_id from request (required for checkout)
+        user_id = data.get('user_id')
+        if not user_id:
+            return jsonify({'success': False, 'message': 'User must be logged in to place order'}), 401
+        
         # Create order
         order_query = "INSERT INTO orders (user_id, address, total_amount, status) VALUES (%s, %s, %s, %s)"
-        cursor.execute(order_query, (1, address, total, 'pending'))  # Assuming user_id = 1 for now
+        cursor.execute(order_query, (user_id, address, total, 'pending'))
         order_id = cursor.lastrowid
         
         # Create order items
@@ -344,6 +355,139 @@ def checkout():
         conn.commit()
         return jsonify({'success': True, 'message': 'Order placed successfully', 'order_id': order_id})
     
+    except Error as e:
+        conn.rollback()
+        return jsonify({'success': False, 'message': f'Database error: {str(e)}'}), 500
+    finally:
+        if conn:
+            conn.close()
+
+# Order History Route
+@app.route('/orders')
+def orders_page():
+    return render_template('orders.html')
+
+@app.route('/api/orders', methods=['GET'])
+def get_user_orders():
+    """Get order history for logged in user"""
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database connection failed'}), 500
+    
+    try:
+        # Get user_id from query parameter
+        user_id = request.args.get('user_id')
+        if not user_id:
+            return jsonify({'success': False, 'message': 'User ID required'}), 400
+        
+        cursor = conn.cursor(dictionary=True)
+        
+        # Get orders for user
+        orders_query = """
+            SELECT o.*, 
+                   COUNT(oi.id) as item_count
+            FROM orders o
+            LEFT JOIN order_items oi ON o.id = oi.order_id
+            WHERE o.user_id = %s
+            GROUP BY o.id
+            ORDER BY o.created_at DESC
+        """
+        cursor.execute(orders_query, (user_id,))
+        orders = cursor.fetchall()
+        
+        # Get order items for each order
+        for order in orders:
+            items_query = """
+                SELECT oi.*, i.name, i.description, r.name as restaurant_name
+                FROM order_items oi
+                JOIN items i ON oi.item_id = i.id
+                JOIN restaurants r ON i.restaurant_id = r.id
+                WHERE oi.order_id = %s
+            """
+            cursor.execute(items_query, (order['id'],))
+            order['items'] = cursor.fetchall()
+        
+        return jsonify({'success': True, 'orders': orders})
+    except Error as e:
+        return jsonify({'success': False, 'message': f'Database error: {str(e)}'}), 500
+    finally:
+        if conn:
+            conn.close()
+
+# Admin Routes
+@app.route('/admin')
+def admin_page():
+    return render_template('admin.html')
+
+@app.route('/api/admin/add-restaurant', methods=['POST'])
+def add_restaurant():
+    """Admin endpoint to add a new restaurant"""
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database connection failed'}), 500
+    
+    try:
+        data = request.json
+        name = data.get('name')
+        description = data.get('description', '')
+        
+        if not name:
+            return jsonify({'success': False, 'message': 'Restaurant name required'}), 400
+        
+        cursor = conn.cursor(dictionary=True)
+        insert_query = "INSERT INTO restaurants (name, description) VALUES (%s, %s)"
+        cursor.execute(insert_query, (name, description))
+        conn.commit()
+        
+        restaurant_id = cursor.lastrowid
+        return jsonify({
+            'success': True,
+            'message': 'Restaurant added successfully',
+            'restaurant': {'id': restaurant_id, 'name': name, 'description': description}
+        })
+    except Error as e:
+        conn.rollback()
+        return jsonify({'success': False, 'message': f'Database error: {str(e)}'}), 500
+    finally:
+        if conn:
+            conn.close()
+
+@app.route('/api/admin/add-item', methods=['POST'])
+def add_item():
+    """Admin endpoint to add a new menu item"""
+    conn = get_db_connection()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database connection failed'}), 500
+    
+    try:
+        data = request.json
+        restaurant_id = data.get('restaurant_id')
+        name = data.get('name')
+        description = data.get('description', '')
+        price = data.get('price')
+        
+        if not restaurant_id or not name or not price:
+            return jsonify({'success': False, 'message': 'Restaurant ID, name, and price are required'}), 400
+        
+        # Validate restaurant exists
+        cursor = conn.cursor(dictionary=True)
+        check_query = "SELECT * FROM restaurants WHERE id = %s"
+        cursor.execute(check_query, (restaurant_id,))
+        restaurant = cursor.fetchone()
+        
+        if not restaurant:
+            return jsonify({'success': False, 'message': 'Restaurant not found'}), 404
+        
+        insert_query = "INSERT INTO items (restaurant_id, name, description, price) VALUES (%s, %s, %s, %s)"
+        cursor.execute(insert_query, (restaurant_id, name, description, price))
+        conn.commit()
+        
+        item_id = cursor.lastrowid
+        return jsonify({
+            'success': True,
+            'message': 'Item added successfully',
+            'item': {'id': item_id, 'restaurant_id': restaurant_id, 'name': name, 'description': description, 'price': price}
+        })
     except Error as e:
         conn.rollback()
         return jsonify({'success': False, 'message': f'Database error: {str(e)}'}), 500

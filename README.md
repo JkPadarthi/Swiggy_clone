@@ -1,6 +1,6 @@
-# Swiggy Clone - Simple Food Ordering Application
+# Jwiggy - Simple Food Ordering Application
 
-A lightweight food ordering application similar to Swiggy, built with Flask backend and vanilla JavaScript frontend.
+A lightweight food ordering application built with Flask backend and vanilla JavaScript frontend.
 
 ## Features
 

@@ -4,6 +4,31 @@ All notable changes to this project will be documented in this file.
 
 ## [SCRATCH PAD - Current Work]
 
+### 🔄 IN PROGRESS - Admin Features & UI Improvements:
+1. ✅ Add admin check for user "vishal" with password "password" - DONE
+2. ✅ Add admin API endpoints for adding restaurants and menu items - DONE
+3. ✅ Create admin frontend pages - DONE
+4. ✅ Display username in header after login - DONE
+5. ✅ Add login check before checkout - DONE
+6. ✅ Improve styling and make pages more beautiful - DONE
+
+### ✅ Latest Updates:
+- ✅ Order history feature added
+- ✅ Order history page with detailed order information
+- ✅ Orders link added to header for logged-in users
+- ✅ All "Swiggy Clone" references replaced with "Jwiggy"
+
+### ✅ Just Completed:
+- Admin login check implemented (vishal/password)
+- Admin API endpoints: /api/admin/add-restaurant, /api/admin/add-item
+- Admin panel page created with forms
+- Username display in header with logout button
+- Admin link shown for admin users
+- Login required for checkout (frontend and backend check)
+- Enhanced styling with gradients, shadows, and animations
+- Common.js created for shared functionality
+- All pages updated to use common.js
+
 ### ✅ Completed:
 - ✅ Database connection testing implemented
 - ✅ Database helper file created with all schemas (database_helper.py)
